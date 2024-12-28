@@ -1,0 +1,11 @@
+---
+import ConfirmLayout from "../../layouts/ConfirmLayout.astro";
+import ConfirmAccount from "./[token].tsx";
+import "@/styles/global.css";
+
+const { token } = Astro.params;
+---
+
+<ConfirmLayout title="Confirmar Cuenta - MenuQR">
+  <ConfirmAccount token={token} client:load />
+</ConfirmLayout>

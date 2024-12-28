@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState } from "react";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
-const steps = ['Datos del Propietario', 'Información del Negocio'];
+const steps = ["Datos del Propietario", "Información del Negocio"];
 
 interface OwnerData {
   rut: string;
@@ -14,6 +20,7 @@ interface OwnerData {
   phone_number: string;
   email: string;
   password: string;
+  confirm_password: string;
 }
 
 interface ShopData {
@@ -30,36 +37,40 @@ export default function RegistrationStepper() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     owner: {
-      rut: '',
-      name: '',
-      last_name: '',
-      phone_number: '',
-      email: '',
-      password: '',
+      rut: "",
+      name: "",
+      last_name: "",
+      phone_number: "",
+      email: "",
+      password: "",
+      confirm_password: "",
     },
     shop: {
-      name: '',
-      description: '',
+      name: "",
+      description: "",
     },
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     if (currentStep === 0) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        owner: { ...prev.owner, [name]: value }
+        owner: { ...prev.owner, [name]: value },
       }));
     } else {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        shop: { ...prev.shop, [name]: value }
+        shop: { ...prev.shop, [name]: value },
       }));
     }
   };
 
-  const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
-  const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 0));
+  const nextStep = () =>
+    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+  const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -109,6 +120,13 @@ export default function RegistrationStepper() {
               value={formData.owner.password}
               onChange={handleInputChange}
             />
+            <Input
+              placeholder="Confirmar Contraseña"
+              name="confirm_password"
+              type="confirm_password"
+              value={formData.owner.confirm_password}
+              onChange={handleInputChange}
+            />
           </>
         );
       case 1:
@@ -136,12 +154,18 @@ export default function RegistrationStepper() {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/shop/', formData);
-      console.log('Registration successful:', response.data);
-      window.location.href = '/greetings';
+      const response = await axios.post(
+        "http://localhost:8000/shop/",
+        formData
+      );
+      console.log("Registration successful:", response.data);
+      alert(
+        "¡Registro completado con éxito! Por favor, revisa tu correo electrónico para confirmar tu cuenta."
+      );
+      window.location.href = "/greetings";
     } catch (error) {
-      console.error('Registration failed:', error);
-      alert('Hubo un error en el registro. Por favor, inténtelo de nuevo.');
+      console.error("Registration failed:", error);
+      alert("Hubo un error en el registro. Por favor, inténtelo de nuevo.");
     }
   };
 
@@ -151,14 +175,16 @@ export default function RegistrationStepper() {
         <CardTitle>{steps[currentStep]}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          {renderStepContent()}
-        </div>
+        <div className="space-y-4">{renderStepContent()}</div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button onClick={prevStep} disabled={currentStep === 0}>Anterior</Button>
-        <Button onClick={currentStep === steps.length - 1 ? handleSubmit : nextStep}>
-          {currentStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
+        <Button onClick={prevStep} disabled={currentStep === 0}>
+          Anterior
+        </Button>
+        <Button
+          onClick={currentStep === steps.length - 1 ? handleSubmit : nextStep}
+        >
+          {currentStep === steps.length - 1 ? "Finalizar" : "Siguiente"}
         </Button>
       </CardFooter>
     </Card>
