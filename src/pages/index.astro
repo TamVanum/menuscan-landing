@@ -1,12 +1,54 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-import '@/css/global.css'
-import { Button } from "@/components/ui/button"
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Features from '../components/Features.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import RegisterCTA from '../components/RegisterCTA.astro';
+import Footer from '../components/Footer.astro';
+import { Button } from '@/components/ui/button';
+import '@/styles/global.css'
 ---
 
-<Layout>
-	<Button>Hello World</Button>
+<Layout title="MenuQR - Crea menús digitales con códigos QR">
+  <Header />
+  <main>
+    <Hero />
+    <Features />
+    <HowItWorks />
+    <RegisterCTA />
+  </main>
+  <Footer />
+  <Button id="translateBtn" client:load class="fixed bottom-4 right-4">
+    Translate to English
+  </Button>
 </Layout>
+
+<script>
+  const translateBtn = document.getElementById('translateBtn');
+  let isSpanish = true;
+
+  translateBtn?.addEventListener('click', () => {
+    isSpanish = !isSpanish;
+    translateBtn.textContent = isSpanish ? 'Translate to English' : 'Traducir al Español';
+    document.querySelectorAll('[data-translate]').forEach(el => {
+      const key = el.getAttribute('data-translate');
+      if (key) {
+        // @ts-ignore
+        el.textContent = translations[key][isSpanish ? 'es' : 'en'];
+      }
+    });
+  });
+
+  const translations = {
+    heroTitle: {
+      es: "Menús Digitales con Códigos QR",
+      en: "Digital Menus with QR Codes"
+    },
+    heroSubtitle: {
+      es: "Moderniza tu negocio de alimentos con menús digitales fáciles de actualizar y códigos QR para una experiencia sin contacto.",
+      en: "Modernize your food business with easy-to-update digital menus and QR codes for a contactless experience."
+    },
+    // Add more translations as needed
+  };
+</script>

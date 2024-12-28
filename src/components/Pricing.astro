@@ -1,0 +1,48 @@
+---
+import { Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+---
+
+<section id="pricing" class="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
+  <div class="container mx-auto px-4 md:px-6">
+    <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">Planes y Precios</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
+      <div class="flex flex-col p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg">
+        <h3 class="text-2xl font-bold mb-4">Básico</h3>
+        <p class="text-gray-500 dark:text-gray-400 mb-4">Perfecto para pequeños negocios</p>
+        <p class="text-4xl font-bold mb-6">$9.99<span class="text-sm font-normal">/mes</span></p>
+        <ul class="mb-6 space-y-2">
+          <li class="flex items-center"><Check class="mr-2 h-4 w-4 text-green-500" /> Hasta 50 productos</li>
+          <li class="flex items-center"><Check class="mr-2 h-4 w-4 text-green-500" /> Códigos QR ilimitados</li>
+          <li class="flex items-center"><Check class="mr-2 h-4 w-4 text-green-500" /> Actualizaciones en tiempo real</li>
+        </ul>
+        <Button client:load class="mt-auto">Elegir Plan</Button>
+      </div>
+      <div class="flex flex-col p-6 bg-blue-600 text-white rounded-lg shadow-lg">
+        <h3 class="text-2xl font-bold mb-4">Pro</h3>
+        <p class="text-blue-100 mb-4">Ideal para negocios en crecimiento</p>
+        <p class="text-4xl font-bold mb-6">$24.99<span class="text-sm font-normal">/mes</span></p>
+        <ul class="mb-6 space-y-2">
+          <li class="flex items-center"><Check class="mr-2 h-4 w-4" /> Hasta 200 productos</li>
+          <li class="flex items-center"><Check class="mr-2 h-4 w-4" /> Códigos QR ilimitados</li>
+          <li class="flex items-center"><Check class="mr-2 h-4 w-4" /> Análisis de escaneos</li>
+          <li class="flex items-center"><Check class="mr-2 h-4 w-4" /> Personalización avanzada</li>
+        </ul>
+        <Button client:load variant="secondary" class="mt-auto">Elegir Plan</Button>
+      </div>
+      <div class="flex flex-col p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg">
+        <h3 class="text-2xl font-bold mb-4">Empresarial</h3>
+        <p class="text-gray-500 dark:text-gray-400 mb-4">Para grandes cadenas de restaurantes</p>
+        <p class="text-4xl font-bold mb-6">Contactar<span class="text-sm font-normal"> para precio</span></p>
+        <ul class="mb-6 space-y-2">
+          <li class="flex items-center"><Check class="mr-2 h-4 w-4 text-green-500" /> Productos ilimitados</li>
+          <li class="flex items-center"><Check class="mr-2 h-4 w-4 text-green-500" /> Múltiples ubicaciones</li>
+          <li class="flex items-center"><Check class="mr-2 h-4 w-4 text-green-500" /> API personalizada</li>
+          <li class="flex items-center"><Check class="mr-2 h-4 w-4 text-green-500" /> Soporte prioritario</li>
+        </ul>
+        <Button client:load variant="outline" class="mt-auto">Contactar Ventas</Button>
+      </div>
+    </div>
+  </div>
+</section>
+

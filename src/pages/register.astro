@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RegistrationStepper from '../components/RegistrationStepper.tsx';
+import '@/styles/global.css'
+---
+
+<Layout title="Registro - MenuQR">
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8 text-center">Registro de Negocio</h1>
+    <RegistrationStepper client:load />
+  </main>
+</Layout>
+

@@ -1,0 +1,38 @@
+---
+import { Button } from "@/components/ui/button";
+---
+
+<section
+  id="register"
+  class="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+>
+  <div class="container mx-auto px-4 md:px-6">
+    <div class="flex flex-col items-center space-y-4 text-center">
+      <div class="space-y-2">
+        <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+          Únete a la Revolución Digital
+        </h2>
+        <p
+          class="mx-auto max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+        >
+          Transforma tu negocio con menús digitales y códigos QR. Regístrate
+          ahora y lleva tu servicio al siguiente nivel.
+        </p>
+      </div>
+      <div class="w-full max-w-sm space-y-2">
+        <a href="/register">
+          <Button
+            client:load
+            size="lg"
+            class="w-full bg-white text-blue-600 hover:bg-blue-50"
+          >
+            Comenzar Registro
+          </Button>
+        </a>
+        <p class="text-sm">
+          ¿Ya tienes una cuenta? <a href="#" class="underline">Inicia sesión</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
