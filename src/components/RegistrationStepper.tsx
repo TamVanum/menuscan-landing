@@ -16,7 +16,7 @@ const steps = ["Datos del Propietario", "Información del Negocio"];
 interface OwnerData {
   rut: string;
   name: string;
-  last_name: string;
+  lastname: string;
   phone_number: string;
   email: string;
   password: string;
@@ -39,7 +39,7 @@ export default function RegistrationStepper() {
     owner: {
       rut: "",
       name: "",
-      last_name: "",
+      lastname: "",
       phone_number: "",
       email: "",
       password: "",
@@ -93,8 +93,8 @@ export default function RegistrationStepper() {
             />
             <Input
               placeholder="Apellido"
-              name="last_name"
-              value={formData.owner.last_name}
+              name="lastname"
+              value={formData.owner.lastname}
               onChange={handleInputChange}
               className="mb-2"
             />
