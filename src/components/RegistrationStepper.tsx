@@ -1,39 +1,60 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
-const steps = ['Propietarios', 'Empleados', 'Información del Negocio'];
+const steps = ['Datos del Propietario', 'Información del Negocio'];
+
+interface OwnerData {
+  rut: string;
+  name: string;
+  last_name: string;
+  phone_number: string;
+  email: string;
+  password: string;
+}
+
+interface ShopData {
+  name: string;
+  description: string;
+}
+
+interface FormData {
+  owner: OwnerData;
+  shop: ShopData;
+}
 
 export default function RegistrationStepper() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState({
-    owners: [{ name: '', email: '' }],
-    employees: [{ name: '', position: '' }],
-    businessName: '',
-    description: ''
+  const [formData, setFormData] = useState<FormData>({
+    owner: {
+      rut: '',
+      name: '',
+      last_name: '',
+      phone_number: '',
+      email: '',
+      password: '',
+    },
+    shop: {
+      name: '',
+      description: '',
+    },
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index?: number, field?: string) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    if (currentStep === 0 || currentStep === 1) {
+    if (currentStep === 0) {
       setFormData(prev => ({
         ...prev,
-        [currentStep === 0 ? 'owners' : 'employees']: prev[currentStep === 0 ? 'owners' : 'employees'].map((item, i) => 
-          i === index ? { ...item, [field!]: value } : item
-        )
+        owner: { ...prev.owner, [name]: value }
       }));
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const addPerson = () => {
-    if (currentStep === 0) {
-      setFormData(prev => ({ ...prev, owners: [...prev.owners, { name: '', email: '' }] }));
-    } else if (currentStep === 1) {
-      setFormData(prev => ({ ...prev, employees: [...prev.employees, { name: '', position: '' }] }));
+      setFormData(prev => ({
+        ...prev,
+        shop: { ...prev.shop, [name]: value }
+      }));
     }
   };
 
@@ -45,64 +66,82 @@ export default function RegistrationStepper() {
       case 0:
         return (
           <>
-            {formData.owners.map((owner, index) => (
-              <div key={index} className="space-y-2">
-                <Input
-                  placeholder="Nombre del propietario"
-                  value={owner.name}
-                  onChange={(e) => handleInputChange(e, index, 'name')}
-                />
-                <Input
-                  placeholder="Email del propietario"
-                  type="email"
-                  value={owner.email}
-                  onChange={(e) => handleInputChange(e, index, 'email')}
-                />
-              </div>
-            ))}
-            <Button onClick={addPerson} variant="outline" className="mt-2">Añadir Propietario</Button>
+            <Input
+              placeholder="RUT"
+              name="rut"
+              value={formData.owner.rut}
+              onChange={handleInputChange}
+              className="mb-2"
+            />
+            <Input
+              placeholder="Nombre"
+              name="name"
+              value={formData.owner.name}
+              onChange={handleInputChange}
+              className="mb-2"
+            />
+            <Input
+              placeholder="Apellido"
+              name="last_name"
+              value={formData.owner.last_name}
+              onChange={handleInputChange}
+              className="mb-2"
+            />
+            <Input
+              placeholder="Número de Teléfono"
+              name="phone_number"
+              value={formData.owner.phone_number}
+              onChange={handleInputChange}
+              className="mb-2"
+            />
+            <Input
+              placeholder="Correo Electrónico"
+              name="email"
+              type="email"
+              value={formData.owner.email}
+              onChange={handleInputChange}
+              className="mb-2"
+            />
+            <Input
+              placeholder="Contraseña"
+              name="password"
+              type="password"
+              value={formData.owner.password}
+              onChange={handleInputChange}
+            />
           </>
         );
       case 1:
         return (
           <>
-            {formData.employees.map((employee, index) => (
-              <div key={index} className="space-y-2">
-                <Input
-                  placeholder="Nombre del empleado"
-                  value={employee.name}
-                  onChange={(e) => handleInputChange(e, index, 'name')}
-                />
-                <Input
-                  placeholder="Cargo del empleado"
-                  value={employee.position}
-                  onChange={(e) => handleInputChange(e, index, 'position')}
-                />
-              </div>
-            ))}
-            <Button onClick={addPerson} variant="outline" className="mt-2">Añadir Empleado</Button>
-          </>
-        );
-      case 2:
-        return (
-          <>
             <Input
               placeholder="Nombre del Negocio"
-              name="businessName"
-              value={formData.businessName}
+              name="name"
+              value={formData.shop.name}
               onChange={handleInputChange}
+              className="mb-2"
             />
             <Textarea
               placeholder="Descripción del Negocio"
               name="description"
-              value={formData.description}
+              value={formData.shop.description}
               onChange={handleInputChange}
-              className="mt-2"
             />
           </>
         );
       default:
         return null;
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post('http://localhost:8000/shop/', formData);
+      console.log('Registration successful:', response.data);
+      window.location.href = '/greetings';
+    } catch (error) {
+      console.error('Registration failed:', error);
+      alert('Hubo un error en el registro. Por favor, inténtelo de nuevo.');
     }
   };
 
@@ -118,11 +157,10 @@ export default function RegistrationStepper() {
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button onClick={prevStep} disabled={currentStep === 0}>Anterior</Button>
-        <Button onClick={currentStep === steps.length - 1 ? () => console.log(formData) : nextStep}>
+        <Button onClick={currentStep === steps.length - 1 ? handleSubmit : nextStep}>
           {currentStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
         </Button>
       </CardFooter>
     </Card>
   );
 }
-
